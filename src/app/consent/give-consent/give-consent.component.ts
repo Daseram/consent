@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Consent } from '../consent.model';
+import { ConsentService } from '../consent.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-give-consent',
@@ -11,12 +14,12 @@ export class GiveConsentComponent implements OnInit {
   consentForm: FormGroup;
 
   checkOptions = [
-    'Receive newsletter',
-    'Be shown targeted ads',
-    'Contribute to anonymous visits statistics'
+    'Receive newsletter', 'Be shown targeted ads', 'Contribute to anonymous visits statistics'
   ];
 
-  constructor(private formBuilder: FormBuilder) { }
+  selectedConsents = [];
+
+  constructor(private formBuilder: FormBuilder, private consentService: ConsentService, private router: Router) { }
 
   ngOnInit() {
     this.consentForm = this.formBuilder.group({
@@ -26,11 +29,31 @@ export class GiveConsentComponent implements OnInit {
   }
 
   onSubmit(formValue) {
-    console.log(formValue);
+    const consent: Consent = {
+      name: formValue.name,
+      email: formValue.email,
+      consents: this.selectedConsents
+    };
+    this.consentService.saveConsent(consent)
+    .subscribe(
+      response => {console.log(response); },
+      error => { console.log(error); },
+      () => { this.gotToConsents(); }
+    );
   }
 
-  selectOption() {
+  gotToConsents() {
+    this.router.navigate(['/collected']);
+  }
 
+  selectOption(option) {
+    const consentAdded = this.selectedConsents.findIndex( consent => consent === option);
+    if (consentAdded === -1) {
+      this.selectedConsents.push(option);
+    } else {
+      this.selectedConsents.splice(consentAdded, 1);
+    }
+    console.log(this.selectedConsents);
   }
 
 }
