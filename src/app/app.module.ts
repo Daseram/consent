@@ -6,7 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import {
+  MatToolbarModule,
+  MatButtonModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatListModule,
+  MatTableModule,
+  MatPaginatorModule } from '@angular/material';
 import { GiveConsentComponent } from './consent/give-consent/give-consent.component';
 import { CollectedConsentComponent } from './consent/collected-consent/collected-consent.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -31,7 +38,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatListModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

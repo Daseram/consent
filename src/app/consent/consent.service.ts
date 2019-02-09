@@ -17,7 +17,7 @@ export class ConsentService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post(`${this.url}/consents`, consent, { headers: headers});
+    return this.http.post(`${this.url}/consent`, consent, { headers: headers});
   }
 
   getConsents() {

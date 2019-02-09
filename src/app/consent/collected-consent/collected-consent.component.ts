@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ConsentService } from '../consent.service';
+import { Consent } from '../consent.model';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-collected-consent',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CollectedConsentComponent implements OnInit {
 
-  constructor() { }
+  collectedConsents: Consent[] = [];
+  displayedColumns: string[] = ['name', 'email', 'consents'];
+  dataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private consentService: ConsentService) { }
 
   ngOnInit() {
+    this.getCollectedConsents();
+  }
+
+  getCollectedConsents() {
+    this.consentService.getConsents()
+    .subscribe(
+      (response: any) => {
+        this.setDataTableSources(response);
+      },
+      (error) => {console.log(error); }
+    );
+  }
+
+  setDataTableSources(response) {
+      this.collectedConsents = response.consents;
+      this.dataSource = new MatTableDataSource<Consent>(this.collectedConsents);
+      this.dataSource.paginator = this.paginator;
   }
 
 }
